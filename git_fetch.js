@@ -19,15 +19,16 @@ export async function main(ns) {
 		throw new Error('Run the script from home');
 	}
 	
-	if(prefixDirectory && !prefixDirectory.endsWith('/')){
-		prefixDirectory += '/';
+	if(prefixDirectory){
+		if(!prefixDirectory.endsWith('/')) prefixDirectory += '/';
+		if(prefixDirectory[0] !== '/') prefixDirectory = '/' + prefixDirectory;
 	}
 
 	for (let i in filesToDownload) {
 		let filename = filesToDownload[i];
 		try {
 			await getFileFromGH(ns, filename);
-			ns.tprint(`Installed ${i}/${filesToDownload.length}: ${filename}`);
+			ns.tprint(`Installed: ${filename} [${Number(i)+1}/${filesToDownload.length}]`);
 		} catch (e) {
 			ns.tprint(`ERROR: tried to download ${filename}: `, e.message);
 			throw e;
@@ -61,5 +62,6 @@ async function getFileFromGH(ns, filepath) {
 async function githubReq(ns, filepath, saveFilepath) {
 	let url = baseURL + owner + "/" + repo + "/" + branch + "/" + filepath;
 	
+	ns.print("Request to: "+url);
 	await ns.wget(url, saveFilepath)
 }
