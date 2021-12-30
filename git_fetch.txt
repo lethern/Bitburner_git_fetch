@@ -1,5 +1,6 @@
 {
 	"filesToDownload": [
-		"git_fetch.js"
+		"my_script.js",
+		"test/my_script2.js"
 	]
 }
